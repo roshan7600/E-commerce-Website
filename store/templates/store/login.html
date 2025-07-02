@@ -1,0 +1,34 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<!-- header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shop in style</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Shop with us</p>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+<br><br><br><br><br>
+<div class="d-flex justify-content-center">
+<form action="{% url 'login' %}" method="POST" class="w-50 p-3">
+    {% csrf_token %}
+    <center>
+        <input type="text" class="form-control mb-3 rounded-pill" name="username" placeholder="Enter your Username" required>
+        <input type="password" class="form-control mb-3 rounded-pill" name="password" placeholder="Enter your Password" required>
+        <button class="btn btn-secondary w-25 rounded-pill">Login</button>
+        <br><br>
+        Not registerd? click here to <a href="{% url 'register' %}" style="text-decoration: none;">Register....</a>
+    </center>
+</form>
+</div>
+
+
+<br><br><br><br><br>
+{% endblock content %}
