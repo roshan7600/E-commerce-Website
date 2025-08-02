@@ -1,0 +1,83 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Billing Form -->
+        <div class="col-md-6">
+            <h4 class="mb-4 fw-bold">Billing Details</h4>
+            <form method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                    <div class="invalid-feedback">Please enter your address.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    <div class="invalid-feedback">Enter a valid 10-digit phone number.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="payment_mode" class="form-label">Payment Mode</label>
+                    <select class="form-select" id="payment_mode" name="payment_mode" required>
+                        <option value="">Select</option>
+                        <option value="COD">Cash on Delivery</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Card">Credit/Debit Card</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a payment method.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Place Order</button>
+            </form>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="col-md-6">
+            <h4 class="mb-4 fw-bold">Order Summary</h4>
+            <ul class="list-group mb-3">
+                {% for item in items %}
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">{{ item.product.name }}</h6>
+                        <small class="text-muted">Qty: {{ item.quantity }}</small>
+                    </div>
+                    <span class="text-muted">₹{{ item.total_price }}</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Total (INR)</strong>
+                    <strong>₹{{ total }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Validation Script -->
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+{% endblock %}

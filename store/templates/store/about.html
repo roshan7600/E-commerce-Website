@@ -1,6 +1,126 @@
 {% extends "store/base.html" %}
+{% load static %}   
+
+{% block title %}About Us | Ecom{% endblock %}
 
 {% block content %}
+<header class="bg-dark py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Shop in Style</h1>
+      <p class="lead fw-normal text-white-75 mb-0">Discover what makes us different</p>
+    </div>
+  </div>
+</header>
 
+<section class="py-5" style="background-color: #f8f9fa;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Welcome to Urban Wagon 👗🛍️</h2>
+      <p class="lead text-muted">Your destination for stylish, affordable, and sustainable fashion.</p>
+    </div>
 
-{% endblock content %}
+    <div class="row align-items-center mb-5">
+      <div class="col-md-3">
+        <img src="{% static 'assets/img/Fashion-collection.jpg' %}" alt="Fashion Collection" class="img-fluid rounded shadow-sm">
+      </div>
+      <div class="col-md-8">
+        <h4 class="fw-bold">Why Choose Ecom?</h4>
+        <ul class="list-unstyled mt-3">
+          <li>✅ Vast collection across men, women & kids</li>
+          <li>✅ Affordable pricing & seasonal discounts</li>
+          <li>✅ Secure checkout and fast delivery</li>
+          <li>✅ Friendly return & refund policies</li>
+        </ul>
+        <p class="mt-3">Fashion is not just what you wear, it’s how you express yourself. We help you do that — easily, confidently, affordably.</p>
+      </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+      <div class="col-md-3 order-md-4">
+        <img src="{% static 'assets/img/ECO.jpg' %}" alt="Eco Friendly" class="img-fluid rounded shadow-sm">
+      </div>
+      <div class="col-md-6 order-md-1">
+        <h4 class="fw-bold">Our Mission 🎯</h4>
+        <p>
+          To revolutionize how people experience fashion — blending style, sustainability, and simplicity.
+          We're here to empower everyone to look good, feel confident, and shop responsibly.
+        </p>
+        <h5 class="mt-3 fw-semibold">Our Core Values</h5>
+        <ul class="mt-2">
+          <li><strong>Sustainability:</strong> Ethical sourcing & eco-friendly packaging</li>
+          <li><strong>Inclusivity:</strong> Fashion for all sizes, genders & identities</li>
+          <li><strong>Innovation:</strong> Leveraging tech for a smarter shopping experience</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mb-5 text-center">
+      <h4 class="fw-bold mb-3">📈 Our Journey</h4>
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <ul class="timeline list-unstyled">
+            <li><strong>2021:</strong> Founded with a bold vision of affordable fashion</li>
+            <li><strong>2022:</strong> Launched first festive wear collection across India</li>
+            <li><strong>2023:</strong> Celebrated 1 million+ happy customers</li>
+            <li><strong>2024:</strong> Introduced our eco-fashion & zero-waste packaging line</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-5 text-center">
+      <h4 class="fw-bold">💬 What Our Customers Say</h4>
+      <div id="testimonialCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <blockquote class="blockquote">
+              <p class="mb-3">"Absolutely love the variety and quality. My go-to fashion hub!"</p>
+              <footer class="blockquote-footer">Sneha R.</footer>
+            </blockquote>
+          </div>
+          <div class="carousel-item">
+            <blockquote class="blockquote">
+              <p class="mb-3">"Great prices and fast delivery. I always find what I need."</p>
+              <footer class="blockquote-footer">Rahul Mehta</footer>
+            </blockquote>
+          </div>
+          <div class="carousel-item">
+            <blockquote class="blockquote">
+              <p class="mb-3">"Return policy is super easy. Love the eco packaging too!"</p>
+              <footer class="blockquote-footer">Ananya D.</footer>
+            </blockquote>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <p class="fs-5">Thank you for being a part of the <strong>Ecom</strong> family 💖 — where fashion meets purpose.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.timeline li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.timeline li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #0d6efd;
+  font-size: 1.5rem;
+  line-height: 1rem;
+}
+</style>
+
+{% endblock %}

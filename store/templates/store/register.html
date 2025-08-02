@@ -1,51 +1,77 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-<!-- header -->
+<!-- Header Section -->
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Shop in style</h1>
-            <p class="lead fw-normal text-white-50 mb-0 mt-5">Register Here</p>
+            <p class="lead fw-normal text-white-50 mb-0 mt-3">Register your account</p>
         </div>
     </div>
 </header>
 
+<!-- Registration Form Section -->
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
 
+            <div class="card shadow rounded-4 border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Create Your Account</h2>
+                    <form method="POST">
+                        {% csrf_token %}
 
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
+                            <input type="text" name="username" class="form-control rounded-end" placeholder="Username" required>
+                        </div>
 
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-id-badge"></i></span>
+                            <input type="text" name="first_name" class="form-control rounded-end" placeholder="First Name" required>
+                        </div>
 
-<br><br><br><br><br>
-<div class="d-flex justify-content-center">
-<form method="POST" class="w-50 p-3">
-    {% csrf_token %}
-    <center>
-        <h1 class=" mb-5 ">Sign Up</h1>
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-id-badge"></i></span>
+                            <input type="text" name="last_name" class="form-control rounded-end" placeholder="Last Name" required>
+                        </div>
 
-        <div class="form-group">
-            <input type="text" class="form-control w-100 mb-3 rounded p-2" name="username" placeholder="username" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control w-100 mb-3 rounded p-2" name="first_name" placeholder="First Name" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control w-100 mb-3 rounded p-2" name="last_name" placeholder="Last Name" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control w-100 mb-3 rounded p-2" name="email" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control w-100 mb-3 rounded p-2" name="password1" placeholder="password" required>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control w-100 mb-3 rounded p-2" name="password2" placeholder="Confirm Password" required>
-        </div>
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
+                            <input type="email" name="email" class="form-control rounded-end" placeholder="Email Address" required>
+                        </div>
 
-        <button class="btn btn-secondary  rounded-pill w-25 mt-5" type="submit">Sign Up</button>
-    </center>
-</form>
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
+                            <input type="password" name="password1" class="form-control rounded-end" placeholder="Password" required>
+                        </div>
+
+                        <div class="mb-4 input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
+                            <input type="password" name="password2" class="form-control rounded-end" placeholder="Confirm Password" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-dark rounded-pill py-2">Register</button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            Already registered? <a href="{% url 'login' %}">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-<br><br><br><br><br>
 {% endblock content %}

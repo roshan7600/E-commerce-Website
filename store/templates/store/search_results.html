@@ -1,0 +1,67 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h3 class="mb-4">🔍 Search Results for: <span class="text-primary">"{{ query }}"</span></h3>
+
+    {% if results %}
+        <div class="row">
+            {% for product in results %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm position-relative">
+                    {% if product.on_sale %}
+                        <span class="badge bg-danger position-absolute" style="top: 10px; right: 10px;">Sale</span>
+                    {% endif %}
+
+                    <!-- Image -->
+                    <img src="{{ product.image.url }}" class="card-img-top" style="height: 220px; object-fit: cover;" alt="{{ product.name }}">
+
+                    <!-- Details -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text small text-muted">{{ product.description|default:"No description."|truncatechars:80 }}</p>
+
+                        {% if product.on_sale %}
+                            <span class="text-muted text-decoration-line-through">₹{{ product.price }}</span><br>
+                            <span class="fw-bold text-danger">₹{{ product.sale_price }}</span>
+                        {% else %}
+                            <h6 class="fw-bold text-dark">₹{{ product.price }}</h6>
+                        {% endif %}
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card-footer bg-white border-0 d-grid gap-2 px-3 pb-3">
+                        <a href="{% url 'product' product.id %}" class="btn btn-sm btn-outline-dark w-100">👁 View Product</a>
+
+                        {% if user.is_authenticated %}
+                            {% if product.id in cart_products %}
+                                <button class="btn btn-sm btn-success w-100" disabled>🛒 In Cart</button>
+                            {% else %}
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-sm btn-primary w-100">🛒 Add to Cart</a>
+                            {% endif %}
+
+                            {% if product.id in wishlist_products %}
+                                <button class="btn btn-sm btn-outline-danger w-100" disabled>❤️ In Wishlist</button>
+                            {% else %}
+                                <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-sm btn-outline-danger w-100">♡ Add to Wishlist</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-sm btn-outline-secondary w-100">Login to Add</a>
+                        {% endif %}
+
+                        {% if "glass" in product.name|lower or "sunglass" in product.name|lower %}
+                            <a href="{% static 'tryon/index.html' %}" class="btn btn-sm btn-outline-primary w-100" target="_blank">👓 Try-On</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning mt-4">
+            No products found for "<strong>{{ query }}</strong>". Try a different keyword.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

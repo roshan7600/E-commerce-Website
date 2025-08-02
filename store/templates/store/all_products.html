@@ -1,0 +1,88 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="section-title text-center mb-5">All Products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-4 justify-content-center">
+            {% for product in products %}
+            <div class="col mb-5">
+                <div class="product-card card h-100 position-relative">
+                    
+                    {% if product.on_sale %}
+                    <div class="sale-badge">SALE</div>
+                    {% endif %}
+
+                    <img class="product-img card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+
+                    <div class="card-body p-4 text-center">
+                        <h5 class="product-title">{{ product.name }}</h5>
+
+                        {% with avg=product.average_rating %}
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="rating-stars">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= avg %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% elif forloop.counter == avg|floatformat:0 and avg|floatformat:1|stringformat:"s"|slice:"-1" >= "5" %}
+                                            <i class="bi bi-star-half"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <span class="rating-count ms-2">({{ avg|floatformat:1 }})</span>
+                            </div>
+                        {% endwith %}
+
+                        <div class="mb-2">
+                            {% if product.on_sale %}
+                                <span class="old-price me-2">₹{{ product.price }}</span>
+                                <span class="sale-price">₹{{ product.sale_price }}</span>
+                            {% else %}
+                                <span class="price">₹{{ product.price }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <span class="category-badge">{{ product.category.name }}</span>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0 p-4 d-grid gap-2">
+                        <a href="{% url 'product' product.id %}" class="btn btn-view btn-sm">
+                            <i class="bi bi-eye me-1"></i> View Details
+                        </a>
+
+                        {% if user.is_authenticated %}
+                            {% if product.id in cart_products %}
+                                <button class="btn btn-success btn-sm" disabled>
+                                    <i class="bi bi-cart-check me-1"></i> In Cart
+                                </button>
+                            {% else %}
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-cart btn-sm">
+                                    <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                                </a>
+                            {% endif %}
+
+                            {% if product.id in wishlist_products %}
+                                <button class="btn btn-danger btn-sm" disabled>
+                                    <i class="bi bi-heart-fill me-1"></i> In Wishlist
+                                </button>
+                            {% else %}
+                                <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-wishlist btn-sm">
+                                    <i class="bi bi-heart me-1"></i> Add to Wishlist
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Login to Shop
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,37 +1,165 @@
- <!-- Navigation-->
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand fw-bold text-danger" href="#!">Ecom</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">categories</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'home' %}">categories</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!"></a></li>
-                        <li><a class="dropdown-item" href="#!"></a></li>
-                    </ul>
-                </li>
-                {% if not user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+<style>
+  /* Navbar Brand */
+  .navbar-brand {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #dc3545 !important;
+    letter-spacing: 0.5px;
+  }
 
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                {% endif %}
+  /* Nav links */
+  .nav-link {
+    font-weight: 500;
+    color: #343a40 !important;
+    transition: color 0.3s ease;
+  }
 
-            </ul>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </form>
+  .nav-link:hover,
+  .nav-link.active {
+    color: #dc3545 !important;
+  }
+
+  /* Buttons */
+  .btn-outline-dark,
+  .btn-outline-danger,
+  .btn-outline-secondary {
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  /* Badge Style */
+  .badge {
+    font-size: 0.6rem;
+    padding: 4px 6px;
+  }
+
+  /* Responsive spacing */
+  @media (max-width: 768px) {
+    .navbar .form-control {
+      width: 100%;
+    }
+
+    .navbar .input-group {
+      flex-wrap: wrap;
+    }
+
+    .navbar .input-group .btn {
+      margin-top: 5px;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="{% url 'home' %}">Trendly</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarSupportedContent">
+      <!-- Left nav -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if 'categories' in request.path %}active{% endif %}" href="#"
+            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'categories' %}">All Categories</a></li>
+            {% for category in all_categories|default_if_none:"" %}
+              <li><a class="dropdown-item" href="{% url 'category_products' category.id %}">{{ category.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Search Bar -->
+      <form class="d-flex me-3" method="GET" action="{% url 'search_results' %}">
+        <div class="input-group">
+          <input class="form-control" type="search" name="q" placeholder="Search products..." id="searchInput" />
+          <button class="btn btn-outline-secondary" type="button" onclick="startVoiceSearch()" title="Speak to search">
+            <i class="bi bi-mic-fill"></i>
+          </button>
+          <button class="btn btn-outline-dark" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
+      </form>
+
+      <!-- Auth Buttons and Icons -->
+      <div class="d-flex align-items-center gap-2">
+        {% if user.is_authenticated %}
+          <span class="me-2 small">👋 Hello, <strong>{{ user.first_name|default:user.username }}</strong></span>
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+          <a class="btn btn-sm btn-outline-dark" href="{% url 'login' %}">Login</a>
+          <a class="btn btn-sm btn-dark text-white" href="{% url 'register' %}">Register</a>
+        {% endif %}
+
+        <!-- Wishlist -->
+        <a class="btn btn-outline-danger position-relative" href="{% url 'wishlist_view' %}">
+          <i class="bi bi-heart"></i>
+        </a>
+
+        <!-- Cart -->
+        <a class="btn btn-outline-dark position-relative" href="{% url 'cart' %}">
+          <i class="bi bi-cart"></i>
+          {% if cart_item_count %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              {{ cart_item_count }}
+            </span>
+          {% endif %}
+        </a>
+      </div>
     </div>
+  </div>
 </nav>
+
+<!-- 🔈 Voice Search Script -->
+<script>
+  function startVoiceSearch() {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Voice search not supported in this browser.");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("searchInput").value = transcript;
+    };
+
+    recognition.onerror = function(event) {
+      alert("Voice input error: " + event.error);
+    };
+
+    recognition.start();
+  }
+</script>
