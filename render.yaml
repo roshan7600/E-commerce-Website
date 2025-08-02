@@ -2,7 +2,9 @@ services:
   - type: web
     name: ecommerce-website
     env: python
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    buildCommand: >
+      pip install -r requirements.txt &&
+      python manage.py collectstatic --noinput
     startCommand: gunicorn ecommerce.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
@@ -14,7 +16,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.8
       - key: ALLOWED_HOSTS
-        value: ecommerce-website.onrender.com,localhost,127.0.0.1
+        value: .onrender.com
       - key: EMAIL_HOST_USER
         value: roshanpatel31296@gmail.com
       - key: EMAIL_HOST_PASSWORD
