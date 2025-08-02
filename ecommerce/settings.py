@@ -16,7 +16,9 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # ==============================
 # 🌍 ALLOWED HOSTS
 # ==============================
-ALLOWED_HOSTS = ['ecommerce-website.onrender.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['ecommerce-website.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['e-commerce-website-075g.onrender.com', 'localhost', '127.0.0.1']
+
 
 # ==============================
 # 🔌 INSTALLED APPS
