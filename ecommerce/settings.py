@@ -9,8 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ==============================
 # 🔐 SECRET KEY & DEBUG
 # ==============================
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-2#)!^3z)=xg##!ep4sy0h8lzywlk7=2(9jwkm2(au1&*ps9-)u')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-fallback-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# DEBUG=True
 
 # ==============================
 # 🌍 ALLOWED HOSTS
@@ -27,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store',  # your app
+    'store',  # Your custom app
 ]
 
 # ==============================
@@ -35,7 +36,7 @@ INSTALLED_APPS = [
 # ==============================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,7 +57,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Optional, for custom templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +72,7 @@ TEMPLATES = [
 ]
 
 # ==============================
-# 🛢️ DATABASE
+# 🛢️ DATABASE (SQLite for Dev, PostgreSQL for Prod)
 # ==============================
 DATABASES = {
     'default': {
@@ -79,6 +80,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# Use PostgreSQL on Render by overriding in Render Dashboard
 
 # ==============================
 # 🔐 PASSWORD VALIDATION
@@ -103,7 +105,7 @@ USE_TZ = True
 # ==============================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ==============================
