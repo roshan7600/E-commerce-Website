@@ -2,8 +2,8 @@ services:
   - type: web
     name: ecommerce-website
     env: python
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: gunicorn ecommerce.wsgi:application
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn ecommerce.wsgi:application"
     envVars:
       - key: DJANGO_SECRET_KEY
         value: django-insecure-2#)!^3z)=xg##!ep4sy0h8lzywlk7=2(9jwkm2(au1&*ps9-)u
