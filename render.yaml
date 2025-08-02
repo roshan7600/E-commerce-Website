@@ -6,10 +6,16 @@ services:
     startCommand: gunicorn ecommerce.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
-        value: your-secret-key
+        value: django-insecure-2#)!^3z)=xg##!ep4sy0h8lzywlk7=2(9jwkm2(au1&*ps9-)u
       - key: DEBUG
         value: False
+      - key: DJANGO_SETTINGS_MODULE
+        value: ecommerce.settings
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
       - key: EMAIL_HOST_USER
-        value: your-email@example.com
+        value: roshanpatel31296@gmail.com
       - key: EMAIL_HOST_PASSWORD
-        value: your-email-password
+        value: udyb snip ygbg emdd
