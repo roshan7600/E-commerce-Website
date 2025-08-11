@@ -27,37 +27,66 @@
             <div class="card shadow rounded-4 border-0">
                 <div class="card-body p-5">
                     <h2 class="text-center mb-4">Create Your Account</h2>
-                    <form method="POST">
+                    <form method="POST" id="registrationForm" novalidate>
                         {% csrf_token %}
 
                         <div class="mb-3 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
-                            <input type="text" name="username" class="form-control rounded-end" placeholder="Username" required>
+                            <input type="text" name="username" id="username" class="form-control rounded-end" 
+                                   placeholder="Username (4-20 characters, letters, numbers, _)" 
+                                   pattern="^[a-zA-Z0-9_]{4,20}$" required>
+                            <div class="invalid-feedback">
+                                Username must be 4-20 characters long and can only contain letters, numbers, and underscores.
+                            </div>
                         </div>
 
                         <div class="mb-3 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-id-badge"></i></span>
-                            <input type="text" name="first_name" class="form-control rounded-end" placeholder="First Name" required>
+                            <input type="text" name="first_name" id="first_name" class="form-control rounded-end" 
+                                   placeholder="First Name (letters only)" 
+                                   pattern="^[a-zA-ZÀ-ÿ\s]{2,30}$" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid first name (2-30 letters).
+                            </div>
                         </div>
 
                         <div class="mb-3 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-id-badge"></i></span>
-                            <input type="text" name="last_name" class="form-control rounded-end" placeholder="Last Name" required>
+                            <input type="text" name="last_name" id="last_name" class="form-control rounded-end" 
+                                   placeholder="Last Name (letters only)" 
+                                   pattern="^[a-zA-ZÀ-ÿ\s]{2,30}$" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid last name (2-30 letters).
+                            </div>
                         </div>
 
                         <div class="mb-3 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="email" class="form-control rounded-end" placeholder="Email Address" required>
+                            <input type="email" name="email" id="email" class="form-control rounded-end" 
+                                   placeholder="Email Address" 
+                                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
                         </div>
 
                         <div class="mb-3 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="password1" class="form-control rounded-end" placeholder="Password" required>
+                            <input type="password" name="password1" id="password1" class="form-control rounded-end" 
+                                   placeholder="Password (8+ chars, 1 uppercase, 1 number)" 
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required>
+                            <div class="invalid-feedback">
+                                Password must be at least 8 characters with 1 uppercase letter and 1 number.
+                            </div>
                         </div>
 
                         <div class="mb-4 input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="password2" class="form-control rounded-end" placeholder="Confirm Password" required>
+                            <input type="password" name="password2" id="password2" class="form-control rounded-end" 
+                                   placeholder="Confirm Password" required>
+                            <div class="invalid-feedback">
+                                Passwords must match.
+                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -73,5 +102,77 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Form validation script
+    (function() {
+        'use strict';
+        
+        const form = document.getElementById('registrationForm');
+        const password1 = document.getElementById('password1');
+        const password2 = document.getElementById('password2');
+        
+        // Custom password confirmation validation
+        function validatePassword() {
+            if (password1.value !== password2.value) {
+                password2.setCustomValidity("Passwords don't match");
+                password2.classList.add('is-invalid');
+            } else {
+                password2.setCustomValidity('');
+                password2.classList.remove('is-invalid');
+            }
+        }
+        
+        password1.addEventListener('change', validatePassword);
+        password2.addEventListener('keyup', validatePassword);
+        
+        // Bootstrap validation
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            // Manually check all fields to show validation messages
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            form.classList.add('was-validated');
+        }, false);
+        
+        // Real-time validation as user types
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (input.checkValidity()) {
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.classList.add('is-invalid');
+                }
+            });
+        });
+    })();
+</script>
+
+<style>
+    .is-invalid {
+        border-color: #dc3545;
+    }
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #dc3545;
+    }
+    .is-invalid ~ .invalid-feedback {
+        display: block;
+    }
+</style>
 
 {% endblock content %}
